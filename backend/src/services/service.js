@@ -8,6 +8,10 @@ class Service {
     async listAll() {
         return dataSource[this.model].findAll();
     }
+
+    async listId(id) {
+        return dataSource[this.model].findByPk(id);
+    }
 }
 
 export { Service }
