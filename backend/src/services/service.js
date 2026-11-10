@@ -22,10 +22,10 @@ class Service {
       where: { id: id },
     });
 
-    if (isUpdated) {
-      return true;
-    } else {
+    if (isUpdated[0] === 0) {
       return false;
+    } else {
+      return true;
     }
   }
 
