@@ -69,11 +69,12 @@ function App() {
               <div className="grid gap-4 sm:grid-cols-2">
                 {heroes.map((hero) => (
                   <article
-                    hey={hero.id}
+                    key={hero.id}
                     className="rounded-lg border border-slate-700 p-4"
                   >
 
                     <h3 className="text-lg font-semibold">{hero.name}</h3>
+                    <p className="mt-2 text-slaet-400">ID: {hero.id}</p>
                     <p className="mt-2 text-slate-400">
                       Universo: {hero.universe}
                     </p>
