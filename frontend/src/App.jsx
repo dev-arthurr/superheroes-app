@@ -1,4 +1,32 @@
+import { useEffect, useState } from "react";
+
 function App() {
+  const [heroes, setHeroes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function loadHeroes() {
+      try {
+        const response = await fetch("http://localhost:3000/heroes");
+
+        if (!response.ok) {
+          throw new Error(`ERRO HTTP: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setHeroes(data);
+      } catch (requestError) {
+        console.error(requestError);
+        setError("Erro ao carregar Heroes");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadHeroes();
+  }, []);
+
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
       <header className="border-b border-slate-800">
@@ -30,12 +58,35 @@ function App() {
 
         <div className="mt-5 rounded-xl border border-slate-800 bg-slate-900 p-6">
           <p className="text-slate-400">
-            A lista de heróis aparecerá aqui.
+            {loading && <p className="text-slate-400">Carregando heróis...</p>}
+
+            {error && <p className="text-red-400">{error}</p>}
+            {!loading && !error && heroes.length === 0 && (
+              <p className="text-slate-400">Ainda não há heróis cadastrados.</p>
+            )}
+
+            {!loading && !error && heroes.length > 0 && (
+              <div className="grid gap-4 sm:grid-cols-2">
+                {heroes.map((hero) => (
+                  <article
+                    hey={hero.id}
+                    className="rounded-lg border border-slate-700 p-4"
+                  >
+
+                    <h3 className="text-lg font-semibold">{hero.name}</h3>
+                    <p className="mt-2 text-slate-400">
+                      Universo: {hero.universe}
+                    </p>
+                    <p className="text-slate-400">Poder: {hero.power}</p>
+                  </article>
+                ))}
+              </div>
+            )}
           </p>
         </div>
       </section>
     </main>
-  )
+  );
 }
 
 export default App;
